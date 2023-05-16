@@ -248,6 +248,28 @@ class Score:
         self.image = self.font.render(f"Score: {self.score}", 0, self.color)
         screen.blit(self.image, self.rect)
 
+class Shield(pg.sprite.Sprite):  # 追加課題２
+    def __init__(self,bird: Bird,life: int):
+        super().__init__()
+        self.image = pg.Surface((20, bird.rect.height))  # 空のsurface
+        pg.draw.rect(self.image, (0, 0, 0), pg.Rect(0, 0, 20, bird.rect.height*2))  # 黒い四角形を描く
+        self.rect = self.image.get_rect()
+        self.rect.centerx=bird.rect.centerx + 50
+        self.rect.centery=bird.rect.centery
+        self.life = life
+        
+    
+    def update(self):
+        """
+        発動時間を１減算数し、０未満になったらグループから削除
+        """
+        self.life -= 1
+        if self.life < 0:
+            self.kill()  # shieldsグループからの削除
+
+    
+
+
 
 def main():
     pg.display.set_caption("真！こうかとん無双")
@@ -260,6 +282,7 @@ def main():
     beams = pg.sprite.Group()
     exps = pg.sprite.Group()
     emys = pg.sprite.Group()
+    shields = pg.sprite.Group()  # 追加課題２
 
     tmr = 0
     clock = pg.time.Clock()
@@ -270,6 +293,11 @@ def main():
                 return 0
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beams.add(Beam(bird))
+            if event.type == pg.KEYDOWN and event.key == pg.K_CAPSLOCK and len(shields) == 0:  #追加課題２
+                if score.score > 10:
+                    shields.add(Shield(bird, 400))
+                    score.score -= 50
+
         screen.blit(bg_img, [0, 0])
 
         if tmr%200 == 0:  # 200フレームに1回，敵機を出現させる
@@ -295,7 +323,12 @@ def main():
             pg.display.update()
             time.sleep(2)
             return
+        
+        for bomb in pg.sprite.groupcollide(bombs, shields, True, False).keys():  # 追加課題２
+            exps.add(Explosion(bomb, 50))  # 爆発エフェクト
+            score.score_up(1)  # 1点アップ
 
+            
         bird.update(key_lst, screen)
         beams.update()
         beams.draw(screen)
@@ -305,6 +338,8 @@ def main():
         bombs.draw(screen)
         exps.update()
         exps.draw(screen)
+        shields.update()  # 防御壁の更新　２
+        shields.draw(screen)  # 防御壁の描画　２
         score.update(screen)
         pg.display.update()
         tmr += 1
