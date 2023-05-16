@@ -109,7 +109,7 @@ class Bird(pg.sprite.Sprite):
         if key_lst[pg.K_LSHIFT]:
             self.speed = 20
         else:
-            self.speed
+            self.speed = 10
             
         if key_lst[pg.K_LSHIFT]:
             self.speed = 20
