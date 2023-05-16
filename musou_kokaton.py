@@ -88,6 +88,12 @@ class Bird(pg.sprite.Sprite):
         引数2 screen：画面Surface
         """
         sum_mv = [0, 0]
+        
+        if key_lst[pg.K_LSHIFT]:
+            self.speed = 20
+        else:
+            self.speed
+            
         if key_lst[pg.K_LSHIFT]:
             self.speed = 20
         else:
