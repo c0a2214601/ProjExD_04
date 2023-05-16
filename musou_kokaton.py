@@ -110,11 +110,6 @@ class Bird(pg.sprite.Sprite):
             self.speed = 20
         else:
             self.speed = 10
-            
-        if key_lst[pg.K_LSHIFT]:
-            self.speed = 20
-        else:
-            self.speed
 
         for k, mv in __class__.delta.items():
             if key_lst[k]:
