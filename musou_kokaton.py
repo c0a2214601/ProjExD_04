@@ -294,7 +294,7 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beams.add(Beam(bird))
             if event.type == pg.KEYDOWN and event.key == pg.K_CAPSLOCK and len(shields) == 0:  #追加課題２
-                if score.score > 10:
+                if score.score > 50:
                     shields.add(Shield(bird, 400))
                     score.score -= 50
 
