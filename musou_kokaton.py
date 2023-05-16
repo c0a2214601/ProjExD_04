@@ -356,6 +356,8 @@ def main():
                 return 0
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beams.add(Beam(bird))
+                if key_lst[pg.K_LSHIFT]:
+                    beams.add(NeoBeam(bird, 5).gen_beams())
 
             if event.type == pg.KEYDOWN and event.key == pg.K_RSHIFT:
                 if score.score>100:
